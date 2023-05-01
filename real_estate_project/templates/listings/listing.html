@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
-{% load humanize%}
+
+{% load indian_numbers_tags %}
 
 {% block title %} | {{ listing.title }} {% endblock %}
 
@@ -93,7 +94,7 @@
               <ul class="list-group list-group-flush">
                 <li class="list-group-item text-secondary">
                   <i class="fas fa-money-bill-alt"></i> Asking Price:
-                  <span class="float-right">₹{{ listing.price | intcomma }}</span>
+                  <span class="float-right">₹{{ listing.price | floatcomma_indian }}</span>
                 </li>
                 <li class="list-group-item text-secondary">
                   <i class="fas fa-bed"></i> Bedrooms:
@@ -168,7 +169,7 @@
           </button>
         </div>
         <div class="modal-body">
-          <form action="{% url 'contact' %}" method="POST">
+          <form id="enquiry_form" action="{% url 'contact' %}" method="POST">
             {% csrf_token %}
             {% if user.is_authenticated %}
               <input type="hidden" name="user_id" value="{{ user.id }}">
@@ -179,7 +180,7 @@
             <input type="hidden" name="listing_id" value="{{ listing.id }}">
             <div class="form-group">
               <label for="property_name" class="col-form-label">Property:</label>
-              <input type="text" name="listing" class="form-control" value="{{ listing.title }}">
+              <input type="text" name="listing" class="form-control" readonly="true" value="{{ listing.title }}, {{ listing.city }}">
             </div>
             <div class="form-group">
               <label for="name" class="col-form-label">Name:</label>
